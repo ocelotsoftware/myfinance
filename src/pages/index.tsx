@@ -85,6 +85,7 @@ const AllTransactions = () => {
               <td className=" px-3">{idx + 1}.</td>
               <td className=" px-3">
                 {transaction.description?.substring(0, 100)}
+                {(transaction.description?.length ?? 0) > 100 ? "..." : ""}
               </td>
               <td className="px-3 text-center">
                 ${Number(transaction.amount)}
