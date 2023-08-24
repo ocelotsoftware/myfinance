@@ -70,11 +70,11 @@ const AllTransactions = () => {
   return (
     <div className="rounded-md bg-light-secondary p-3">
       <table className="w-full text-left ">
-        <thead className="bg-light-accent text-center text-white">
-          <th className="px-2">No.</th>
-          <th className="px-2">Description</th>
-          <th className="px-2">Amount</th>
-          <th className="px-2">Account</th>
+        <thead className="text-center text-white">
+          <th className="rounded-tl-md bg-light-accent px-2 ">No.</th>
+          <th className="bg-light-accent px-2 ">Description</th>
+          <th className="bg-light-accent px-2 ">Amount</th>
+          <th className="rounded-tr-md bg-light-accent px-2">Account</th>
         </thead>
         <tbody className="">
           {data.map((transaction, idx) => (
