@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { createTRPCRouter } from "@/server/api/trpc";
 import { userRouter } from "./routers/user";
 

@@ -17,9 +17,9 @@ function LoginPage({
       <Head>
         <title>Login | MyFinance</title>
       </Head>
-      <div className="flex h-screen w-full  place-items-center justify-center">
-        <div className="w-[80vw] rounded-md bg-light-secondary py-3 md:w-[400px] md:px-4">
-          <div className="text-3xl font-bold">Sign In</div>
+      <div className="absolute left-0 top-0 flex h-screen w-full place-items-center justify-center ">
+        <div className="w-[80vw]  rounded-md bg-light-secondary py-8 md:w-[400px] md:px-4">
+          <div className="text-3xl font-bold  mb-10">Sign In</div>
           <div className="text-red-700">{error}</div>
           <div className="mt-5 grid gap-y-3 ">
             {Object.values(providers).map((provider, key) => (
