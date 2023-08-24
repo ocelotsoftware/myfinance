@@ -42,13 +42,24 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?        @unique
     emailVerified DateTime?
     image         String?
+    description   String?
     accounts      Account[]
     sessions      Session[]
+    transactions  Transactions[]
+}
+
+model Transactions {
+    id          Int     @id @default(autoincrement())
+    userId      String
+    user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    description String?
+    amount      Decimal
+    currency    String  @db.VarChar(3)
 }
 
 model VerificationToken {
