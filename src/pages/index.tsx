@@ -5,6 +5,8 @@ import { getServerAuthSession } from "@/server/auth";
 import { FC, useEffect, useState } from "react";
 import NavBar from "@/ui/navbar";
 import { api } from "@/utils/api";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerAuthSession(context);
@@ -45,8 +47,30 @@ const AuthHome = ({ userId }: { userId: string }) => {
     <main className="grid gap-5">
       <div className="text-5xl font-bold">Hi {profile.name},</div>
       <TotalSpending />
+      <AvailableBanks />
     </main>
   );
+};
+
+const AvailableBanks = () => {
+  const { isLoading, data } = api.transactions.getAllBanks.useQuery();
+
+  const router = useRouter();
+  if (isLoading) {
+    return null;
+  }
+  if (!data || data.length === 0)
+    return (
+      <div className="">
+        <button
+          onClick={() => void router.push("/accounts/create")}
+          className="w-full rounded-md bg-light-accent py-2 text-xl font-semibold text-white transition hover:opacity-80"
+        >
+          It seems like you haven&apos;t setup any sources. You can create one
+          here.
+        </button>
+      </div>
+    );
 };
 
 const TotalSpending = () => {

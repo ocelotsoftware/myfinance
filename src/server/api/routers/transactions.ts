@@ -30,4 +30,20 @@ export const transactionRouter = createTRPCRouter({
       return null;
     }
   }),
+  getAllBanks: protectedProcedure.query(async ({ ctx }) => {
+    const banks = await prisma.banks.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+    });
+    return banks as
+      | {
+          id: number;
+          userId: string;
+          name: string;
+          description: string;
+          emoji: string;
+        }[]
+      | null;
+  }),
 });
