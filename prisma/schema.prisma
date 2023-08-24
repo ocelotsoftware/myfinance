@@ -54,25 +54,30 @@ model User {
 }
 
 model Transactions {
-    id          Int      @id @default(autoincrement())
-    userId      String
-    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    description String?
-    amount      Decimal
-    currency    String   @db.VarChar(3)
-    bankId      Int
-    bank        Banks?   @relation(fields: [bankId], references: [id], onDelete: Cascade)
-    createdAt   DateTime @default(now())
+    id                       Int      @id @default(autoincrement())
+    userId                   String
+    user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    description              String?
+    amount                   Decimal
+    bankId                   Int
+    bank                     Banks    @relation(fields: [bankId], references: [id], onDelete: Cascade)
+    accountTransferredToId   Int?
+    transferredTo            Banks?   @relation("transferredTo", fields: [accountTransferredToId], references: [id], onDelete: Cascade)
+    accountTransferredFromId Int?
+    transferredFrom          Banks?   @relation("transferredFrom", fields: [accountTransferredFromId], references: [id], onDelete: Cascade)
+    createdAt                DateTime @default(now())
 }
 
 model Banks {
-    id           Int            @id @default(autoincrement())
-    userId       String
-    name         String
-    description  String
-    emoji        String
-    type         String
-    transactions Transactions[]
+    id              Int            @id @default(autoincrement())
+    userId          String
+    name            String
+    description     String
+    emoji           String
+    type            String
+    transferredTo   Transactions[] @relation("transferredTo")
+    Transactions    Transactions[]
+    transferredFrom Transactions[] @relation("transferredFrom")
 
     @@unique([userId, name])
 }

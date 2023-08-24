@@ -6,7 +6,7 @@ function NavBar() {
   const { data } = useSession();
 
   return (
-    <nav className="mb-10 mt-3 flex justify-between ">
+    <nav className="py-3 flex justify-between ">
       <Link href={"/"} className="text-3xl font-bold">
         MyFinance
       </Link>

@@ -4,7 +4,8 @@
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
-import { Decimal } from "@prisma/client/runtime/library";
+import type { Decimal } from "@prisma/client/runtime/library";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const transactionRouter = createTRPCRouter({
@@ -89,7 +90,6 @@ export const transactionRouter = createTRPCRouter({
       userId: string;
       description: string | null;
       amount: Decimal;
-      currency: string;
       bankId: number;
       bank: {
         id: number;
@@ -101,4 +101,48 @@ export const transactionRouter = createTRPCRouter({
       } | null;
     }[];
   }),
+  createNewTransaction: protectedProcedure
+    .input(
+      z.object({
+        type: z.string(),
+        bankId: z.number(),
+        transferredBankId: z.number().nullable(),
+        amount: z.number(),
+        description: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (input.transferredBankId !== null) {
+        await prisma.$transaction([
+          prisma.transactions.create({
+            data: {
+              amount: input.amount * -1,
+              accountTransferredToId: input.transferredBankId,
+              bankId: input.bankId,
+              userId: ctx.session.user.id,
+              description: input.description,
+            },
+          }),
+          prisma.transactions.create({
+            data: {
+              amount: input.amount,
+              accountTransferredFromId: input.bankId,
+              bankId: input.transferredBankId,
+              userId: ctx.session.user.id,
+              description: input.description,
+            },
+          }),
+        ]);
+      } else {
+        await prisma.transactions.create({
+          data: {
+            amount: input.amount * (input.type === "profit" ? 1 : -1),
+            bankId: input.bankId,
+            userId: ctx.session.user.id,
+            description: input.description,
+          },
+        });
+      }
+      return null;
+    }),
 });
