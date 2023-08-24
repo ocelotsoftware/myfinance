@@ -52,8 +52,17 @@ const AuthHome = ({ userId }: { userId: string }) => {
       <div className="text-5xl font-bold">Hi {profile.name},</div>
       <TotalSpending />
       <AvailableBanks />
+      <div className="grid">
+        <div>
+          <AllTransactions />
+        </div>
+      </div>
     </main>
   );
+};
+
+const AllTransactions = () => {
+  return <div></div>;
 };
 
 const AvailableBanks = () => {
@@ -90,6 +99,25 @@ const AvailableBanks = () => {
           </div>
         </Link>
       ))}
+      <Link
+        href={"/accounts/create"}
+        className="flex aspect-square h-full place-items-center justify-center rounded-md bg-light-secondary text-light-primary/40 hover:opacity-80"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="h-8 w-8 stroke-2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4.5v15m7.5-7.5h-15"
+          />
+        </svg>
+      </Link>
     </div>
   );
 };

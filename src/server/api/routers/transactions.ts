@@ -37,9 +37,6 @@ export const transactionRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
-      include: {
-        transactions: true,
-      },
     });
     return banks as
       | {
@@ -48,14 +45,6 @@ export const transactionRouter = createTRPCRouter({
           name: string;
           description: string;
           emoji: string;
-          transactions: {
-            id: number;
-            userId: string;
-            description: string | null;
-            amount: Decimal;
-            currency: string;
-            bankId: number;
-          }[];
         }[]
       | null;
   }),
@@ -69,24 +58,17 @@ export const transactionRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      try {
-        await prisma.banks.create({
-          data: {
-            description: input.description,
-            emoji: input.emoji,
-            name: input.name,
-            type: input.type,
-            userId: ctx.session.user.id,
-          },
-        });
-        return {
-          status: "success",
-        };
-      } catch (e) {
-        return {
-          status: "failure",
-          error: e,
-        };
-      }
+      await prisma.banks.create({
+        data: {
+          description: input.description,
+          emoji: input.emoji,
+          name: input.name,
+          type: input.type,
+          userId: ctx.session.user.id,
+        },
+      });
+      return {
+        status: "success",
+      };
     }),
 });
