@@ -1,12 +1,12 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { getServerAuthSession } from "@/server/auth";
-import { FC, useEffect, useState } from "react";
-import NavBar from "@/ui/navbar";
+import type { FC } from "react";
 import { api } from "@/utils/api";
-import Link from "next/link";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { LoadingSpinner } from "@/ui/LoadingSpinner";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerAuthSession(context);
@@ -40,7 +40,11 @@ const AuthHome = ({ userId }: { userId: string }) => {
   });
 
   if (isProfileLoading || !profile) {
-    return <div>Loading....</div>;
+    return (
+      <div className="my-20 flex w-full justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (
@@ -71,6 +75,23 @@ const AvailableBanks = () => {
         </button>
       </div>
     );
+
+  return (
+    <div className="flex gap-3">
+      {data.map((account) => (
+        <Link
+          href={`/accounts/${account.id}`}
+          key={account.id}
+          className="flex w-fit select-none items-center gap-2 rounded-md  bg-light-secondary px-3 py-1 transition hover:opacity-80"
+        >
+          <div className="flex flex-col items-center">
+            <div className="w-fit  text-6xl">{account.emoji}</div>
+            <div className="font-semibold">{account.name}</div>
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
 };
 
 const TotalSpending = () => {

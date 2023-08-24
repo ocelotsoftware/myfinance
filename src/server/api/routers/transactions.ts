@@ -4,6 +4,7 @@
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
+import type { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
 
 export const transactionRouter = createTRPCRouter({
@@ -36,6 +37,9 @@ export const transactionRouter = createTRPCRouter({
       where: {
         userId: ctx.session.user.id,
       },
+      include: {
+        transactions: true,
+      },
     });
     return banks as
       | {
@@ -44,6 +48,14 @@ export const transactionRouter = createTRPCRouter({
           name: string;
           description: string;
           emoji: string;
+          transactions: {
+            id: number;
+            userId: string;
+            description: string | null;
+            amount: Decimal;
+            currency: string;
+            bankId: number;
+          }[];
         }[]
       | null;
   }),
