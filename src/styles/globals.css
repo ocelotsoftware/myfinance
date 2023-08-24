@@ -6,7 +6,7 @@ body {
 }
 
 .input {
-  @apply w-full rounded-md bg-light-secondary px-5 py-3  outline-none placeholder:text-light-accent/30 
+  @apply  rounded-md bg-light-secondary px-5 py-3  outline-none placeholder:text-light-accent/30 
 }
 
 @tailwind utilities;

@@ -4,6 +4,7 @@
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
+import { z } from "zod";
 
 export const transactionRouter = createTRPCRouter({
   totalAmount: protectedProcedure.query(async ({ ctx }) => {
@@ -46,4 +47,34 @@ export const transactionRouter = createTRPCRouter({
         }[]
       | null;
   }),
+  createBank: protectedProcedure
+    .input(
+      z.object({
+        emoji: z.string(),
+        name: z.string(),
+        description: z.string() || z.null(),
+        type: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await prisma.banks.create({
+          data: {
+            description: input.description,
+            emoji: input.emoji,
+            name: input.name,
+            type: input.type,
+            userId: ctx.session.user.id,
+          },
+        });
+        return {
+          status: "success",
+        };
+      } catch (e) {
+        return {
+          status: "failure",
+          error: e,
+        };
+      }
+    }),
 });

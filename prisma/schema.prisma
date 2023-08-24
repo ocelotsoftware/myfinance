@@ -70,6 +70,7 @@ model Banks {
     name         String
     description  String
     emoji        String         @db.VarChar(1)
+    type         String
     transactions Transactions[]
 
     @@unique([userId, name])
