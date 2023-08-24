@@ -18,7 +18,7 @@ jobs:
       - run: npm install
       - run: npm install --global vercel@latest
       - name: Pull Vercel Environment Variables
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} && mv .vercel/.env.production.local .env.production.local
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} && cp .vercel/.env.production.local .env.production.local
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy to Vercel
