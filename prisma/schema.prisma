@@ -54,14 +54,15 @@ model User {
 }
 
 model Transactions {
-    id          Int     @id @default(autoincrement())
+    id          Int      @id @default(autoincrement())
     userId      String
-    user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     description String?
     amount      Decimal
-    currency    String  @db.VarChar(3)
+    currency    String   @db.VarChar(3)
     bankId      Int
-    bank        Banks?  @relation(fields: [bankId], references: [id], onDelete: Cascade)
+    bank        Banks?   @relation(fields: [bankId], references: [id], onDelete: Cascade)
+    createdAt   DateTime @default(now())
 }
 
 model Banks {
@@ -69,7 +70,7 @@ model Banks {
     userId       String
     name         String
     description  String
-    emoji        String         
+    emoji        String
     type         String
     transactions Transactions[]
 

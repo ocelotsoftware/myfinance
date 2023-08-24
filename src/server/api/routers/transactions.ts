@@ -4,6 +4,7 @@
 
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
+import { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
 
 export const transactionRouter = createTRPCRouter({
@@ -70,4 +71,34 @@ export const transactionRouter = createTRPCRouter({
         status: "success",
       };
     }),
+  getRecentTransactions: protectedProcedure.query(async ({ ctx }) => {
+    const data = await prisma.transactions.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      include: {
+        bank: true,
+      },
+      take: 5,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return data as {
+      id: number;
+      userId: string;
+      description: string | null;
+      amount: Decimal;
+      currency: string;
+      bankId: number;
+      bank: {
+        id: number;
+        userId: string;
+        name: string;
+        description: string;
+        emoji: string;
+        type: string;
+      } | null;
+    }[];
+  }),
 });

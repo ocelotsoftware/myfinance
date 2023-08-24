@@ -52,8 +52,8 @@ const AuthHome = ({ userId }: { userId: string }) => {
       <div className="text-5xl font-bold">Hi {profile.name},</div>
       <TotalSpending />
       <AvailableBanks />
-      <div className="grid">
-        <div>
+      <div className="grid grid-cols-2">
+        <div className="md:col-span-1">
           <AllTransactions />
         </div>
       </div>
@@ -62,7 +62,40 @@ const AuthHome = ({ userId }: { userId: string }) => {
 };
 
 const AllTransactions = () => {
-  return <div></div>;
+  const { isLoading, data } = api.transactions.getRecentTransactions.useQuery();
+
+  if (isLoading || !data) {
+    return null;
+  }
+  return (
+    <div className="rounded-md bg-light-secondary p-3">
+      <table className="w-full text-left ">
+        <thead className="bg-light-accent text-center text-white">
+          <th className="px-2">No.</th>
+          <th className="px-2">Description</th>
+          <th className="px-2">Amount</th>
+          <th className="px-2">Account</th>
+        </thead>
+        <tbody className="">
+          {data.map((transaction, idx) => (
+            <tr
+              className="divide-x divide-light-primary/30 odd:bg-light-accent/20 even:bg-light-secondary"
+              key={transaction.id}
+            >
+              <td className=" px-3">{idx + 1}.</td>
+              <td className=" px-3">
+                {transaction.description?.substring(0, 100)}
+              </td>
+              <td className="px-3 text-center">
+                ${Number(transaction.amount)}
+              </td>
+              <td className=" px-3">{transaction.bank?.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 const AvailableBanks = () => {
