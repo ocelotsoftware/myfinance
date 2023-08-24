@@ -2,7 +2,7 @@
 @tailwind components;
 
 body {
-  @apply bg-slate-300;
+  @apply bg-light-background text-light-text;
 }
 
 @tailwind utilities;
