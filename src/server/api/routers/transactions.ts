@@ -5,7 +5,6 @@
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { prisma } from "@/server/db";
 import type { Decimal } from "@prisma/client/runtime/library";
-import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const transactionRouter = createTRPCRouter({

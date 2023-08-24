@@ -2,13 +2,12 @@ import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import type { GetServerSideProps } from "next";
 import { getServerAuthSession } from "@/server/auth";
-import { useState, type FC, useEffect } from "react";
+import { useState, type FC } from "react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { LoadingSpinner } from "@/ui/LoadingSpinner";
 import * as Dialog from "@radix-ui/react-dialog";
-import { number } from "zod";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerAuthSession(context);
