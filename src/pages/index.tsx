@@ -79,7 +79,7 @@ const AllTransactions = () => {
         <tbody className="">
           {data.map((transaction, idx) => (
             <tr
-              className="divide-x divide-light-primary/30 odd:bg-light-accent/20 even:bg-light-secondary"
+              className="divide-x divide-light-primary/10 odd:bg-light-accent/20 even:bg-light-secondary"
               key={transaction.id}
             >
               <td className=" px-3">{idx + 1}.</td>
