@@ -89,7 +89,13 @@ const AllTransactions = () => {
             >
               <td className=" px-3">{idx + 1}.</td>
               <td className=" px-3">
-                {transaction.description?.substring(0, 100)}
+                {transaction.description !== "" ? (
+                  transaction.description?.substring(0, 100)
+                ) : (
+                  <span className="italic opacity-80">
+                    No description provided
+                  </span>
+                )}
                 {(transaction.description?.length ?? 0) > 100 ? "..." : ""}
               </td>
               <td className="px-3 text-center">
